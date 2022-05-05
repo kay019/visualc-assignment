@@ -22,6 +22,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     HWND hWnd;
     MSG Message;
     WNDCLASS WndClass;
+    WNDCLASS WndClass2;
     g_hInst = hInstance;
 
     WndClass.cbClsExtra = 0;
@@ -36,13 +37,27 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     WndClass.style = CS_HREDRAW | CS_VREDRAW;
     RegisterClass(&WndClass);     //메인윈도우 클래스 등록
 
+    WndClass2.cbClsExtra = 0;
+    WndClass2.cbWndExtra = 0;
+    WndClass2.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    WndClass2.hCursor = LoadCursor(NULL, IDC_ARROW);
+    WndClass2.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    WndClass2.hInstance = hInstance;
+    WndClass2.lpfnWndProc = (WNDPROC)WndProc;
+    WndClass2.lpszClassName = lpszClass;
+    WndClass2.lpszMenuName = NULL;
+    WndClass2.style = CS_HREDRAW | CS_VREDRAW;
+
+
+
+
     WndClass.lpfnWndProc = ChildWndProc;      //차일드 윈도우 프로시저
     WndClass.lpszClassName = ChildClassName; //차일드 윈도우 클래스이름
     RegisterClass(&WndClass);
 
-    WndClass.lpfnWndProc = ChildWndProc2;      //차일드 윈도우 프로시저        // 이하 3줄 추가
-    WndClass.lpszClassName = ChildClassName2; //차일드 윈도우 클래스이름
-    RegisterClass(&WndClass);
+    WndClass2.lpfnWndProc = ChildWndProc2;      //차일드 윈도우 프로시저        // 이하 3줄 추가
+    WndClass2.lpszClassName = ChildClassName2; //차일드 윈도우 클래스이름
+    RegisterClass(&WndClass2);
 
     hWnd = CreateWindow(lpszClass,            //윈도우클래스 이름
         L"Visual C++ 출석수업 대체 실습과제물",                //윈도우타이틀
@@ -82,7 +97,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
     {
         HWND hChildWnd = CreateWindow(
             ChildClassName,             // 차일드 윈도우 클래스 이름 
-            L"소속",                // 윈도우 타이틀 
+            L"출석수업",                // 윈도우 타이틀 
             WS_OVERLAPPEDWINDOW | WS_CHILD,  // 윈도우  스타일 
             50,               // 윈도우 보일 때 x 좌표 
             150,               // 윈도우 보일 때 y 좌표 
@@ -97,7 +112,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 
         hChildWnd = CreateWindow(
             ChildClassName2,             // 추가되는 차일드 윈도우 클래스 이름 
-            L"제출기간",
+            L"소속",
             WS_OVERLAPPEDWINDOW | WS_CHILD,
             400,
             150,
@@ -112,7 +127,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 
         hChildWnd = CreateWindow(
             L"button",                // 윈도우 클래스 이름 
-            L"학번",            // 윈도우 타이틀 
+            L"대체시험일",            // 윈도우 타이틀 
             WS_CHILD | WS_VISIBLE,     // 윈도우 스타일 
             100,               // 윈도우 보일 때 x 좌표 
             400,               // 윈도우 보일 때 y 좌표 
@@ -127,7 +142,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 
         hChildWnd = CreateWindow(                    // 추가된 버튼
             L"button",                // 윈도우 클래스 이름 
-            L"이름",            // 윈도우 타이틀
+            L"학과",            // 윈도우 타이틀
             WS_CHILD | WS_VISIBLE,     // 윈도우 스타일 
             500,               // 윈도우 보일 때 x 좌표 
             400,               // 윈도우 보일 때 y 좌표 
@@ -146,12 +161,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
     {
         if (LOWORD(wParam) == ID_OK_BTN)
         {
-            MessageBox(hWnd, L"202134-154039", L"학번", MB_OK);
+            MessageBox(hWnd, L"2022년 5월 16일 18:00까지", L"대체시험일", MB_OK);
         }
 
         if (LOWORD(wParam) == ID_OK_BTN1)        // 메인윈도에 추가된 버튼
         {
-            MessageBox(hWnd, L"김정훈", L"이름", MB_OK);
+            MessageBox(hWnd, L"컴퓨터과학과", L"학과", MB_OK);
         }
 
         return 0;
@@ -166,7 +181,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 
 LRESULT CALLBACK ChildWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    LPCTSTR text = L"서울지역대학 서부학습센터";
+    LPCTSTR text = L"참석 불가능";
     switch (message)
     {
     case WM_PAINT:
@@ -182,7 +197,7 @@ LRESULT CALLBACK ChildWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
     {
         HWND hChildWnd = CreateWindow(                    // 추가된 버튼
             L"button",                // 윈도우 클래스 이름 
-            L"학과",            // 윈도우 타이틀
+            L"대체시험형태",            // 윈도우 타이틀
             WS_CHILD | WS_VISIBLE,     // 윈도우 스타일 
             50,               // 윈도우 보일 때 x 좌표 
             100,               // 윈도우 보일 때 y 좌표 
@@ -202,7 +217,7 @@ LRESULT CALLBACK ChildWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
     {
         if (LOWORD(wParam) == ID_OK_BTN2)
         {
-            MessageBox(hWnd, L"컴퓨터과학과", L"학과", MB_OK);        //학과
+            MessageBox(hWnd, L"실습과제물", L"대체시험형태", MB_OK);        //학과
         }
 
         return 0;
@@ -214,7 +229,7 @@ LRESULT CALLBACK ChildWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 
 LRESULT CALLBACK ChildWndProc2(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)    // 추가된 CALLBACK함수
 {
-    LPCTSTR text = L"2021년 5월 21일 18:00까지 제출";
+    LPCTSTR text = L"서울지역대학 서부학습센터";
     switch (message)
     {
     case WM_PAINT:
